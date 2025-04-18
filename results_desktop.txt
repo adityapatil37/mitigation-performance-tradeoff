@@ -1,0 +1,40 @@
+Configuration: Baseline
+  Average: 0.001854s
+  Std Dev: 0.000653s
+  Range: 0.001091s - 0.004751s
+
+Configuration: aslr
+  Average: 0.002602s
+  Std Dev: 0.000875s
+  Range: 0.001578s - 0.005692s
+
+Configuration: dep
+  Average: 0.002329s
+  Std Dev: 0.000882s
+  Range: 0.001175s - 0.005727s
+
+Configuration: cfi
+  Average: 0.002910s
+  Std Dev: 0.000871s
+  Range: 0.001525s - 0.007286s
+
+Configuration: aslr+dep
+  Average: 0.002237s
+  Std Dev: 0.000676s
+  Range: 0.001483s - 0.005505s
+
+Configuration: aslr+cfi
+  Average: 0.003828s
+  Std Dev: 0.001074s
+  Range: 0.002075s - 0.007420s
+
+Configuration: dep+cfi
+  Average: 0.002714s
+  Std Dev: 0.000938s
+  Range: 0.001457s - 0.006751s
+
+Configuration: aslr+dep+cfi
+  Average: 0.003143s
+  Std Dev: 0.000842s
+  Range: 0.001980s - 0.006356s
+
