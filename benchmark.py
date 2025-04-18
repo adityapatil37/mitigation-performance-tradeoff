@@ -211,8 +211,8 @@ def main(args):
     current_env = args.environment
     env_profile = ENV_PROFILES[current_env]
     
-    # print(f"Selected Environment: {current_env}")
-    # print(f"Iterations: {args.iterations}")
+    print(f"Selected Environment: {current_env}")
+    print(f"Iterations: {args.iterations}")
     
     test_configs = [
         {'mitigations': []},
@@ -235,9 +235,9 @@ def main(args):
         config['results'] = bench_results
         results.append(config)
         
-        # print(f"  Average: {bench_results['avg']:.6f}s")
-        # print(f"  Std Dev: {bench_results['stdev']:.6f}s")
-        # print(f"  Range: {bench_results['min']:.6f}s - {bench_results['max']:.6f}s\n")
+        print(f"  Average: {bench_results['avg']:.6f}s")
+        print(f"  Std Dev: {bench_results['stdev']:.6f}s")
+        print(f"  Range: {bench_results['min']:.6f}s - {bench_results['max']:.6f}s\n")
         
     plot_comparison(results, current_env)
     
