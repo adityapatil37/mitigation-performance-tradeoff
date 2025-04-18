@@ -238,8 +238,11 @@ def main(args):
         print(f"  Average: {bench_results['avg']:.6f}s")
         print(f"  Std Dev: {bench_results['stdev']:.6f}s")
         print(f"  Range: {bench_results['min']:.6f}s - {bench_results['max']:.6f}s\n")
-        
-    plot_comparison(results, current_env)
+    
+    # Only generate plot if --plot is specified
+    if args.plot:
+        plot_comparison(results, current_env)
+        print(f"Plot saved to performance_{current_env}.png")
     
     with open(f'results_{current_env}.txt', 'w') as f:
         for config in results:
@@ -248,7 +251,7 @@ def main(args):
             f.write(f"  Std Dev: {config['results']['stdev']:.6f}s\n")
             f.write(f"  Range: {config['results']['min']:.6f}s - {config['results']['max']:.6f}s\n\n")
     
-    print(f"\nResults saved to results_{current_env}.txt and performance_{current_env}.png")
+    print(f"\nResults saved to results_{current_env}.txt")
 
 # -----------------------------------------------------------------------------------
 # Command Line Interface
@@ -260,6 +263,8 @@ if __name__ == "__main__":
                        default='desktop', help="Target environment profile")
     parser.add_argument('-i', '--iterations', type=int, default=20,
                        help="Number of benchmark iterations")
+    parser.add_argument('--plot', action='store_true',
+                       help="Generate performance comparison plot")
     args = parser.parse_args()
     
     main(args)
