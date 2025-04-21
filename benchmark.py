@@ -38,6 +38,86 @@ ENV_PROFILES = {
         'cfi_depth': 3,
         'memory_size': 65536,
         'parallel': False
+    },
+    'cloud_serverless': {
+        'aslr_iterations': 2000,   # Frequent cold starts
+        'dep_checks': 150,
+        'cfi_depth': 4,
+        'memory_size': 131072,     # 128KB
+        'parallel': True,
+        'ephemeral': True
+    },
+    'iot_industrial': {
+        'aslr_iterations': 100,    # Constrained devices
+        'dep_checks': 75,
+        'cfi_depth': 3,
+        'memory_size': 512,        # 0.5KB
+        'parallel': False,
+        'real_time': True
+    },
+    'automotive': {
+        'aslr_iterations': 300,    # Balance of safety/performance
+        'dep_checks': 200,
+        'cfi_depth': 4,
+        'memory_size': 32768,      # 32KB
+        'parallel': False,
+        'safety_critical': True
+    },
+    'gaming_console': {
+        'aslr_iterations': 1500,   # High-performance security
+        'dep_checks': 200,
+        'cfi_depth': 6,
+        'memory_size': 2097152,    # 2MB
+        'parallel': True,
+        'high_perf': True
+    },
+    'medical_device': {
+        'aslr_iterations': 400,    # Regulatory compliance focus
+        'dep_checks': 300,
+        'cfi_depth': 5,
+        'memory_size': 16384,      # 16KB
+        'parallel': False,
+        'fda_class': 'II'
+    },
+    'edge_computing': {
+        'aslr_iterations': 800,    # Distributed systems balance
+        'dep_checks': 120,
+        'cfi_depth': 4,
+        'memory_size': 262144,     # 256KB
+        'parallel': True,
+        'low_latency': True
+    },
+    'mobile': {
+        'aslr_iterations': 600,    # Battery-constrained security
+        'dep_checks': 180,
+        'cfi_depth': 4,
+        'memory_size': 524288,     # 512KB
+        'parallel': True,
+        'power_efficient': True
+    },
+    'quantum': {
+        'aslr_iterations': 5000,   # Post-quantum preparation
+        'dep_checks': 500,
+        'cfi_depth': 8,
+        'memory_size': 4194304,    # 4MB
+        'parallel': True,
+        'quantum_safe': True
+    },
+    'smart_contract': {
+        'aslr_iterations': 200,    # Blockchain-specific needs
+        'dep_checks': 400,
+        'cfi_depth': 7,
+        'memory_size': 8192,       # 8KB
+        'parallel': False,
+        'immutable': True
+    },
+    'military': {
+        'aslr_iterations': 3000,   # Extreme security posture
+        'dep_checks': 1000,
+        'cfi_depth': 9,
+        'memory_size': 1048576,    # 1MB
+        'parallel': True,
+        'air_gapped': True
     }
 }
 
@@ -384,7 +464,8 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Advanced Security Mitigation Analyzer")
-    parser.add_argument('-e', '--environment', choices=['embedded', 'server', 'desktop'],
+    parser.add_argument('-e', '--environment', choices=['embedded', 'server', 'desktop', 'cloud_serverless',
+                       'iot_industrial', 'automotive', 'gaming_console', 'medical_device',],
                        default='desktop', help="Target environment profile")
     parser.add_argument('-i', '--iterations', type=int, default=50,
                        help="Number of benchmark iterations")
