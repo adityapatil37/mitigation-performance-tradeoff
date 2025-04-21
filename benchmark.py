@@ -118,7 +118,175 @@ ENV_PROFILES = {
         'memory_size': 1048576,    # 1MB
         'parallel': True,
         'air_gapped': True
-    }
+    },
+    'blockchain': {
+        'aslr_iterations': 1000,   # Decentralized security
+        'dep_checks': 300,
+        'cfi_depth': 6,
+        'memory_size': 131072,     # 128KB
+        'parallel': True,
+        'distributed': True
+    },
+    '5g_network': {
+        'aslr_iterations': 800,    # High-speed network security
+        'dep_checks': 250,
+        'cfi_depth': 5,
+        'memory_size': 524288,     # 512KB
+        'parallel': True,
+        'low_latency': True
+    },
+    'quantum_computing': {
+        'aslr_iterations': 10000,  # Quantum-specific needs
+        'dep_checks': 2000,
+        'cfi_depth': 10,
+        'memory_size': 8388608,    # 8MB
+        'parallel': True,
+        'quantum_safe': True
+    },
+    'edge_ai': {
+        'aslr_iterations': 1200,   # AI model security
+        'dep_checks': 300,
+        'cfi_depth': 6,
+        'memory_size': 262144,     # 256KB
+        'parallel': True,
+        'ai_optimized': True
+    },
+    'robotics': {
+        'aslr_iterations': 700,    # Real-time robotics security
+        'dep_checks': 200,
+        'cfi_depth': 5,
+        'memory_size': 131072,     # 128KB
+        'parallel': False,
+        'real_time': True
+    },
+    'smart_home': {
+        'aslr_iterations': 300,    # Home automation security
+        'dep_checks': 150,
+        'cfi_depth': 4,
+        'memory_size': 65536,      # 64KB
+        'parallel': False,
+        'user_friendly': True
+    },
+    'augmented_reality': {
+        'aslr_iterations': 900,    # AR-specific needs
+        'dep_checks': 250,
+        'cfi_depth': 5,
+        'memory_size': 524288,     # 512KB
+        'parallel': True,
+        'immersive': True
+    },
+    'virtual_reality': {
+        'aslr_iterations': 1200,   # VR-specific needs
+        'dep_checks': 300,
+        'cfi_depth': 6,
+        'memory_size': 1048576,    # 1MB
+        'parallel': True,
+        'immersive': True
+    },
+    'drones': {
+        'aslr_iterations': 600,    # Drone-specific needs
+        'dep_checks': 200,
+        'cfi_depth': 5,
+        'memory_size': 131072,     # 128KB
+        'parallel': False,
+        'real_time': True
+    },
+    'smart_grid': {
+        'aslr_iterations': 800,    # Smart grid security
+        'dep_checks': 250,
+        'cfi_depth': 6,
+        'memory_size': 262144,     # 256KB
+        'parallel': True,
+        'low_latency': True
+    },
+    'biometric': {
+        'aslr_iterations': 400,    # Biometric data security
+        'dep_checks': 150,
+        'cfi_depth': 4,
+        'memory_size': 65536,      # 64KB
+        'parallel': False,
+        'privacy_sensitive': True
+    },
+    'wearable_tech': {
+        'aslr_iterations': 500,    # Wearable device security
+        'dep_checks': 200,
+        'cfi_depth': 5,
+        'memory_size': 32768,      # 32KB
+        'parallel': False,
+        'battery_constrained': True
+    },
+    'supply_chain': {
+        'aslr_iterations': 1000,   # Supply chain security
+        'dep_checks': 300,
+        'cfi_depth': 6,
+        'memory_size': 131072,     # 128KB
+        'parallel': True,
+        'immutable': True
+    },
+    'automated_testing': {
+        'aslr_iterations': 200,    # Automated testing security
+        'dep_checks': 100,
+        'cfi_depth': 3,
+        'memory_size': 8192,       # 8KB
+        'parallel': False,
+        'test_automation': True
+    },
+    'data_center': {
+        'aslr_iterations': 1500,   # Data center security
+        'dep_checks': 500,
+        'cfi_depth': 7,
+        'memory_size': 2097152,    # 2MB
+        'parallel': True,
+        'high_perf': True
+    },
+    'telecommunications': {
+        'aslr_iterations': 1200,   # Telecom security
+        'dep_checks': 400,
+        'cfi_depth': 6,
+        'memory_size': 524288,     # 512KB
+        'parallel': True,
+        'low_latency': True
+    },
+    'financial_services': {
+        'aslr_iterations': 800,    # Financial security
+        'dep_checks': 300,
+        'cfi_depth': 5,
+        'memory_size': 262144,     # 256KB
+        'parallel': True,
+        'privacy_sensitive': True
+    },
+    'e_commerce': {
+        'aslr_iterations': 600,    # E-commerce security
+        'dep_checks': 200,
+        'cfi_depth': 4,
+        'memory_size': 131072,     # 128KB
+        'parallel': False,
+        'user_friendly': True
+    },
+    'social_media': {
+        'aslr_iterations': 500,    # Social media security
+        'dep_checks': 150,
+        'cfi_depth': 3,
+        'memory_size': 65536,      # 64KB
+        'parallel': False,
+        'user_friendly': True
+    },
+    'cloud_storage': {
+        'aslr_iterations': 1000,   # Cloud storage security
+        'dep_checks': 300,
+        'cfi_depth': 6,
+        'memory_size': 1048576,    # 1MB
+        'parallel': True,
+        'privacy_sensitive': True
+    },
+    'content_delivery': {
+        'aslr_iterations': 1200,   # Content delivery security
+        'dep_checks': 400,
+        'cfi_depth': 5,
+        'memory_size': 524288,     # 512KB
+        'parallel': True,
+        'low_latency': True
+    },
 }
 
 current_env = 'desktop'
