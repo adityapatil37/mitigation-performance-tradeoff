@@ -24,3 +24,4 @@ Prevents code execution from non-executable memory regions (e.g., stack, heap).
 Restricts indirect control flow to only valid call targets.
 
 ---
+
