@@ -157,7 +157,7 @@ python mitigation_benchmark.py -e server -i 100 -c 0.99 --plot
 
 ---
 
-## License 📄
+## License
 
 Apache 2.0 with Commons Clause - See LICENSE for details.
 
