@@ -15,6 +15,14 @@ from concurrent.futures import ThreadPoolExecutor
 import psutil
 from scipy.stats import ttest_ind, t
 import numpy as np
+import logging
+
+# Configure structured logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
 
 # Environment profiles configuration
 ENV_PROFILES = {
@@ -400,85 +408,115 @@ def create_workload(env_profile, mitigations):
 
 # Enhanced benchmarking system
 def benchmark(func, iterations=20, warmup=5, confidence=0.95):
-    process = psutil.Process(os.getpid())
+    # --- Validate inputs ---
+    try:
+        iterations = int(iterations)
+        warmup     = int(warmup)
+        confidence = float(confidence)
+        if iterations < 1 or warmup < 0 or not (0.0 < confidence < 1.0):
+            raise ValueError
+    except ValueError:
+        raise ValueError("`iterations` ≥1 (int), `warmup` ≥0 (int), and `confidence` ∈ (0,1)")
+
+    # --- Acquire process handle safely ---
+    try:
+        process = psutil.Process(os.getpid())
+    except Exception as e:
+        logging.error(f"Failed to access process info: {e}")
+        # Return empty stats in case of failure
+        return {
+            'time':   {'samples': [], 'stats': {}},
+            'memory': {'samples': [], 'stats': {}}
+        }
+
     results = {
-        'time': {'samples': [], 'stats': {}},
+        'time':   {'samples': [], 'stats': {}},
         'memory': {'samples': [], 'stats': {}}
     }
 
-    # Warmup phase with error handling
-    for _ in range(warmup):
+    # --- Warmup phase ---
+    for i in range(1, warmup + 1):
         gc.collect()
         try:
             func()
+        except MemoryError as me:
+            logging.warning(f"Warmup #{i} out of memory: {me}")
         except Exception as e:
-            print(f"Warning: Workload failed during warmup: {str(e)}")
+            logging.warning(f"Warmup #{i} failed: {e}")
 
-    # Measurement phase with safety checks
+    # --- Measurement phase ---
     valid_runs = 0
-    while valid_runs < iterations:
+    attempts   = 0
+    max_attempts = iterations * 3
+
+    while valid_runs < iterations and attempts < max_attempts:
+        attempts += 1
         gc.collect()
-        mem_before = process.memory_info().rss
-        
+
+        # snapshot memory before
         try:
-            start_time = time.perf_counter()
-            func()
-            elapsed = time.perf_counter() - start_time
-            success = True
+            mem_before = process.memory_info().rss
         except Exception as e:
-            print(f"Warning: Workload failed during measurement: {str(e)}")
-            success = False
-        
-        if success:
+            logging.error(f"Could not read memory before run: {e}")
+            break
+
+        try:
+            start = time.perf_counter()
+            func()
+            elapsed = time.perf_counter() - start
+
+            # snapshot memory after
             mem_after = process.memory_info().rss
+
             results['time']['samples'].append(elapsed)
             results['memory']['samples'].append(mem_after - mem_before)
             valid_runs += 1
 
-    # Robust statistical calculations
+        except MemoryError as me:
+            logging.error(f"Run #{attempts} out of memory: {me}")
+        except Exception as e:
+            logging.error(f"Run #{attempts} failed: {e}")
+
+    if valid_runs < iterations:
+        logging.warning(f"Completed only {valid_runs}/{iterations} successful runs after {attempts} attempts")
+
+    # --- Robust stats helper ---
     def safe_stats(data):
-        """Robust statistical calculations with NaN protection"""
-        if len(data) == 0:
+        if not data:
             return {
-                'mean': 0.0,
-                'stdev': 0.0,
-                'ci_low': 0.0,
-                'ci_high': 0.0,
-                'median': 0.0,
-                'min': 0.0,
-                'max': 0.0,
-                'iqr': []
+                'mean':   0.0, 'stdev': 0.0,
+                'ci_low': 0.0, 'ci_high': 0.0,
+                'median': 0.0, 'min':    0.0,
+                'max':    0.0, 'iqr':    []
             }
-                
         mean = statistics.mean(data)
         stdev = statistics.stdev(data) if len(data) > 1 else 0.0
-        
-        # Safely calculate confidence interval
         try:
-            with np.errstate(invalid='ignore'):
-                ci = t.interval(
-                    confidence, 
-                    len(data)-1,
-                    loc=mean,
-                    scale=stdev/math.sqrt(len(data))
-                )
-        except:
-            ci = (mean, mean)
-        
+            ci_low, ci_high = t.interval(
+                confidence,
+                len(data) - 1,
+                loc=mean,
+                scale=stdev / math.sqrt(len(data)) if stdev > EPSILON else EPSILON
+            )
+        except Exception:
+            ci_low, ci_high = mean, mean
+
         return {
-            'mean': mean,
-            'stdev': stdev,
-            'ci_low': ci[0] if not math.isnan(ci[0]) else mean,
-            'ci_high': ci[1] if not math.isnan(ci[1]) else mean,
-            'median': statistics.median(data),
-            'min': min(data),
-            'max': max(data),
-            'iqr': statistics.quantiles(data, n=4) if len(data) >= 4 else []
+            'mean':    mean,
+            'stdev':   stdev,
+            'ci_low':  ci_low if not math.isnan(ci_low) else mean,
+            'ci_high': ci_high if not math.isnan(ci_high) else mean,
+            'median':  statistics.median(data),
+            'min':     min(data),
+            'max':     max(data),
+            'iqr':     statistics.quantiles(data, n=4) if len(data) >= 4 else []
         }
 
-    results['time']['stats'] = safe_stats(results['time']['samples'])
+    # --- Compute final statistics ---
+    results['time']['stats']   = safe_stats(results['time']['samples'])
     results['memory']['stats'] = safe_stats(results['memory']['samples'])
-    
+
+    logging.info(f"Benchmark complete: {valid_runs} successful runs")
     return results
 
 def compare_configurations(results):
