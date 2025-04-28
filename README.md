@@ -17,7 +17,8 @@ This tool provides a systematic framework for evaluating the performance impact 
 7. [Output and Results](#output-and-results)
 8. [Extending and Customization](#extending-and-customization)
 9. [Troubleshooting](#troubleshooting)
-10. [License](#license)
+10. [Contributing](#contributing)
+11. [License](#license)
 
 ---
 
@@ -157,9 +158,28 @@ python mitigation_benchmark.py -e server -i 100 -c 0.99 --plot
 
 ---
 
+## Contributing
+
+We welcome contributions through:
+- New environment profiles
+- Additional mitigation strategies
+- Enhanced statistical models
+- Documentation improvements
+
+**Process**
+1. Fork repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature`)
+4. Push branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+---
+
 ## License
 
 Apache 2.0 with Commons Clause - See LICENSE for details.
 
 Commercial Use
 Contact adityapa37@gmail.com for enterprise licensing options.
+
+---
