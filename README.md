@@ -156,3 +156,10 @@ python mitigation_benchmark.py -e server -i 100 -c 0.99 --plot
 - **Missing Modules**: Ensure all dependencies are installed in the active Python environment.
 
 ---
+
+## License 📄
+
+Apache 2.0 with Commons Clause - See LICENSE for details.
+
+Commercial Use
+Contact adityapa37@gmail.com for enterprise licensing options.
