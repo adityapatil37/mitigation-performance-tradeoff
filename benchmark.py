@@ -295,6 +295,14 @@ ENV_PROFILES = {
         'parallel': True,
         'low_latency': True
     },
+    'gaming': {
+        'aslr_iterations': 1500,   # Gaming security
+        'dep_checks': 500,
+        'cfi_depth': 7,
+        'memory_size': 2097152,    # 2MB
+        'parallel': True,
+        'high_perf': True
+    },
 }
 
 current_env = 'desktop'
